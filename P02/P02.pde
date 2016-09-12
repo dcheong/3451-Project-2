@@ -1,10 +1,11 @@
-// Template for 2D projects
-// Author: Jarek ROSSIGNAC
+// Computer Graphics Project 2
+// Author: Douglas Cheong, Lily Lau
 import processing.pdf.*;    // to save screen shots as PDFs, does not always work: accuracy problems, stops drawing or messes up some curves !!!
 
 //**************************** global variables ****************************
 pts P = new pts(); // class containing array of points, used to standardize GUI
 float t=0, f=0;
+boolean drawing;
 boolean animate=true, fill=false, timing=false;
 boolean lerp=true, slerp=true, spiral=true; // toggles to display vector interpoations
 int ms=0, me=0; // milli seconds start and end for timing
@@ -30,7 +31,9 @@ void draw()      // executed at each frame
     background(white); // clear screen and paints white background
     pen(black,3); fill(yellow); P.drawCurve(); P.IDs(); // shows polyloop with vertex labels
     stroke(red); pt G=P.Centroid(); show(G,10); // shows centroid
-    pen(green,5); arrow(A,B);            // defines line style wiht (5) and color (green) and draws starting arrow from A to B
+    arrow(A,B);
+    if (!drawing) {boolean goodSplit = P.splitBy(A,B);}
+    
 
 
   if(recordingPDF) endRecordingPDF();  // end saving a .pdf file with the image of the canvas

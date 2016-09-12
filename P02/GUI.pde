@@ -137,14 +137,15 @@ void mousePressed()   // executed when the mouse is pressed
      if (key=='i')  P.insertClosestProjection(Mouse()); // inserts vertex at closest projection of mouse
      if (key=='d')  P.deletePickedPt(); // deletes vertex closeset to mouse
      } 
-  if (keyPressed && key=='s') {A=Mouse(); B=Mouse();} 
+  if (keyPressed && key=='s') {drawing=true; A=Mouse(); B=Mouse();} 
   change=true;
   }
 
 void mouseReleased()   // executed when the mouse is pressed
   {
   if (keyPressed && key=='s') B=Mouse(); 
-  change=true;    
+  change=true;
+  drawing=false;
   }
 
 void mouseDragged() // executed when the mouse is dragged (while mouse buttom pressed)
@@ -167,8 +168,8 @@ void mouseWheel(MouseEvent event) { // reads mouse wheel and uses to zoom
   }
 
 //**************************** text for name, title and help  ****************************
-String title ="Split Polygon Puzzle",            name ="Student: First LAST",
-       subtitle = "  base code for P2 for Jarek Rossignac's CS3451 class in the Fall 2016",
+String title ="Split Polygon Puzzle",            name ="Students: Lily LAU, Douglas CHEONG",
+       subtitle = "  CS 3451 Project 2",
        
        menu="?:(show/hide) help, ~/!/@:snap pdf/jpg/fif, `:(start/stop) recording, S/L:save/load, Q:quit",
        guide="click&drag:edit, d&click:delete, i&click&drag:insrt, s&click&drag:split"; // help info
