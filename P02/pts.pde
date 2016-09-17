@@ -317,9 +317,6 @@ class pts
         float t = RayEdgeCrossParameter(A,V,G[v],G[n(v)]);
         
         if (t < 1) {
-          pt coll = P(A, t, V);
-          pen(green, 2);
-          show(coll);
           count++;
         }
       }

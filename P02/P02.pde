@@ -17,6 +17,7 @@ boolean lerp=true, slerp=true, spiral=true; // toggles to display vector interpo
 int ms=0, me=0; // milli seconds start and end for timing
 int npts=20000; // number of points
 pt A=P(100,100), B=P(300,300);
+pts outline;
 //**************************** initialization ****************************
 void setup()               // executed once at the begining 
   {
@@ -29,6 +30,7 @@ void setup()               // executed once at the begining
   // P.resetOnCircle(4); // sets P to have 4 points and places them in a circle on the canvas
   R[0].loadPts("data/pts");  // loads points form file saved with this program
   P = R[0];
+  outline = R[0];
   } // end of setup
 
 //**************************** display current frame ****************************
@@ -37,23 +39,22 @@ void draw()      // executed at each frame
   if(recordingPDF) startRecordingPDF(); // starts recording graphics to make a PDF
   
     background(white); // clear screen and paints white background
+    fill(white);
+    pen(red, 2);
+    outline.drawCurve();
     for (int i = 0; i < regions; i++) {
       
       pen(white,3);
+      fill(black);
       if (R[i].inside(i)) {
-        fill(blue);
+        fill(grey);
         P = R[i];
         if (debugPoints) {
           println("The mouse is inside region " + i);
         }
         currentRegion = i;
-      } else {
-        fill(black);
       }
       R[i].drawCurve();
-      pt C = R[i].G[0];
-      C.label("Region " + i);
-      C.show();
     }
     debugPoints = false;
     P.attemptSplit(A,B);
