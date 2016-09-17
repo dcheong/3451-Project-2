@@ -333,11 +333,18 @@ pt pointOnArcThrough (pt A, pt B, pt C, float t)
    }
    
 boolean LineStabsEdge(pt A, pt B, pt C, pt D) {
-  float t = -det(V(C,D),V(C,A))/det(V(C,D),V(A,B));
-  pt coll = A.add(W(t,V(A,B))); //point of collision
-  float time = (coll.x - C.x)/(V(C,D).x);
-  print(time);
-  return (time >= 0 && time <= 1);
+  return (onRight(A,B,C) != onRight(A,B,D));
+  //float t = -det(V(C,D),V(C,A))/det(V(C,D),V(A,B));
+  //pt dummy = new pt(A.x, A.y);
+  //pt coll = dummy.add(W(t,V(A,B))); //point of collision
+  //float time = (coll.x - C.x)/(V(C,D).x);
+  //return (time >= 0 && time <= 1);
+}
+
+boolean onRight(pt A, pt B, pt C) {
+  vec AB = V(A,B);
+  vec AC = V(A,C);
+  return det(AB,AC) < 0;
 }
 
 float RayEdgeCrossParameter(pt P, vec V, pt A, pt B)

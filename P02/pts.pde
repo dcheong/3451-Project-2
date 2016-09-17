@@ -302,20 +302,50 @@ class pts
     
   boolean splitBy(pt A, pt B)
     {
+      int back = 0;
+      int front = 0;
+      float backT = 0.;
+      float frontT = 0.;
+      int r = 0; int b = 0;
+      int g = 0; 
+      boolean goodSplit = true;
+      vec V = V(A,B);
       for (int v=0; v<nv; v++) {
         if(LineStabsEdge(A,B,G[v],G[n(v)]))
         {
-          vec V = V(A,B);
           float t = RayEdgeCrossParameter(A,V,G[v],G[n(v)]);
           pt X = P(A,t,V);
-          if (t < 0) pen(red,2);
-          if (0 <= t && t <= 1) pen(green,5);
-          if (1<t) pen(blue,2);
-          show(X,4);
+          if (t < 0) {
+            pen(red,2);
+            if (r == 0 || t > backT) {
+              r++;
+              backT = t;
+              back = v;
+            }
+          }
+          if (0 <= t && t <= 1) {
+            pen(green,5);
+            g++;
+          }
+          if (1<t) {
+            pen(blue,2);
+            if (b == 0 || t < frontT) {
+              b++;
+              frontT = t;
+              front = v;
+            }
+          }
         }
+        
       }
-      float f = random(0,2);
-      return f<1;
+      pt backPoint = P(A,backT,V);
+      pt frontPoint = P(A, frontT, V);
+      pen(red, 2);
+      show(backPoint, 4);
+      pen(blue, 2);
+      show(frontPoint, 4);
+      if (g > 0) goodSplit = false;
+      return goodSplit;
     }
   
   }  // end class pts

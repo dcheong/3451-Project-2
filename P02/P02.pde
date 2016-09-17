@@ -31,9 +31,12 @@ void draw()      // executed at each frame
     background(white); // clear screen and paints white background
     pen(black,3); fill(yellow); P.drawCurve(); P.IDs(); // shows polyloop with vertex labels
     stroke(red); pt G=P.Centroid(); show(G,10); // shows centroid
-    arrow(A,B);
-    if (!drawing) {boolean goodSplit = P.splitBy(A,B);}
     
+    if(P.splitBy(A,B)) { stroke(green); }
+    else {
+      stroke(red);
+    }
+    arrow(A,B);
 
 
   if(recordingPDF) endRecordingPDF();  // end saving a .pdf file with the image of the canvas
