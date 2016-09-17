@@ -37,15 +37,17 @@ void draw()      // executed at each frame
   
     background(white); // clear screen and paints white background
     for (int i = 0; i < regions; i++) {
-      pen(white,3); fill(red);
+      pen(white,3);
+      if (R[i].inside()) {
+        fill(blue);
+        P = R[i];
+      } else {
+        fill(red);
+      }
       R[i].drawCurve();
     }
     
-    if(P.splitBy(A,B)) { stroke(green); }
-    else {
-      stroke(red);
-    }
-    arrow(A,B);
+    P.splitBy(A,B);
 
 
   if(recordingPDF) endRecordingPDF();  // end saving a .pdf file with the image of the canvas

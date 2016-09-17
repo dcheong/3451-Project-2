@@ -307,6 +307,20 @@ class pts
   int n(int v) { return (v+1)%nv; }
   int p(int v) { return (v+nv-1)%nv; }
     
+  boolean inside() {
+    pt A = P(0,0);
+    pt B = Mouse();
+    vec V = V(A,B);
+    int count = 0;
+    for (int v=0; v<nv; v++) {
+      if(LineStabsEdge(A,B,G[v],G[n(v)])) {
+        float t = RayEdgeCrossParameter(A,V,G[v],G[n(v)]);
+        if (t < 1) count++;
+      }
+    }
+    println(count);
+    return count % 2 == 1;
+  }
   boolean splitBy(pt A, pt B)
     {
       int back = 0;
@@ -346,14 +360,12 @@ class pts
         
       }
       pt backPoint = P(A,backT,V);
-      arrow(G[front],G[n(front)]);
-      arrow(G[back],G[n(back)]);
       pt frontPoint = P(A, frontT, V);
-      pen(red, 2);
-      show(backPoint, 4);
-      pen(blue, 2);
-      show(frontPoint, 4);
-      if (g > 0) goodSplit = false;
+      pen(green, 1);
+      if (g > 0) { goodSplit = false; pen(red, 2);}
+      if (drawing) {
+        arrow(backPoint, frontPoint);
+      }
       if (goodSplit && split) {
         pts rightRegion = new pts();
         rightRegion.declare();
