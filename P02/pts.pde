@@ -307,7 +307,7 @@ class pts
   int n(int v) { return (v+1)%nv; }
   int p(int v) { return (v+nv-1)%nv; }
     
-  boolean inside() {
+  boolean inside(int i) {
     pt A = P(0,0);
     pt B = Mouse();
     vec V = V(A,B);
@@ -315,10 +315,18 @@ class pts
     for (int v=0; v<nv; v++) {
       if(LineStabsEdge(A,B,G[v],G[n(v)])) {
         float t = RayEdgeCrossParameter(A,V,G[v],G[n(v)]);
-        if (t < 1) count++;
+        
+        if (t < 1) {
+          pt coll = P(A, t, V);
+          pen(green, 2);
+          show(coll);
+          count++;
+        }
       }
     }
-    println(count);
+    if (debugPoints) {
+      println(count + " collisions on region " + i);
+    }
     return count % 2 == 1;
   }
   boolean splitBy(pt A, pt B)
@@ -388,6 +396,9 @@ class pts
         R[regions] = rightRegion;
         R[currentRegion] = leftRegion;
         regions++;
+        println("# of regions is now " + regions);
+        println("We replaced region " + currentRegion + " with leftRegion");
+        println("We inserted the rightRegion at position " + regions);
         split = false;
       }
       return goodSplit;

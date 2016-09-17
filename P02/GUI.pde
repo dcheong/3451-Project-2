@@ -19,7 +19,7 @@ void keyPressed()  // executed each time a key is pressed: sets the Boolean "key
 
     if(key=='`') filming=!filming;  // filming on/off capture frames into folder IMAGES/MOVIE_FRAMES_TIF/
     if(key=='1') ;               // toggles what should be displayed at each fram
-    if(key=='2') ;
+    if(key=='2') debugPoints = true;
     if(key=='3') ;
     if(key=='4') ;
     if(key=='5') ;
@@ -151,7 +151,7 @@ void mouseReleased()   // executed when the mouse is pressed
 
 void mouseDragged() // executed when the mouse is dragged (while mouse buttom pressed)
   {
-  if (!keyPressed || (key=='a')|| (key=='i')) P.dragPicked();   // drag selected point with mouse
+  //if (!keyPressed || (key=='a')|| (key=='i')) P.dragPicked();   // drag selected point with mouse
   if (keyPressed) {
       if (key=='.') f+=2.*float(mouseX-pmouseX)/width;  // adjust current frame   
       if (key=='t') P.dragAll(); // move all vertices

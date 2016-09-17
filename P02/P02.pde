@@ -9,6 +9,7 @@ int currentRegion = 0;
 int regions = 1;
 pts [] R = new pts [maxRegionCount];
 float t=0, f=0;
+boolean debugPoints = false;
 boolean drawing;
 boolean split = false;
 boolean animate=true, fill=false, timing=false;
@@ -37,16 +38,24 @@ void draw()      // executed at each frame
   
     background(white); // clear screen and paints white background
     for (int i = 0; i < regions; i++) {
+      
       pen(white,3);
-      if (R[i].inside()) {
+      if (R[i].inside(i)) {
         fill(blue);
         P = R[i];
+        if (debugPoints) {
+          println("The mouse is inside region " + i);
+        }
+        currentRegion = i;
       } else {
         fill(red);
       }
       R[i].drawCurve();
+      pt C = R[i].G[0];
+      C.label("Region " + i);
+      C.show();
     }
-    
+    debugPoints = false;
     P.splitBy(A,B);
 
 
