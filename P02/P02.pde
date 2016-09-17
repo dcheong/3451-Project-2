@@ -48,7 +48,7 @@ void draw()      // executed at each frame
         }
         currentRegion = i;
       } else {
-        fill(red);
+        fill(black);
       }
       R[i].drawCurve();
       pt C = R[i].G[0];
