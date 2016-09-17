@@ -329,7 +329,7 @@ class pts
     }
     return count % 2 == 1;
   }
-  boolean splitBy(pt A, pt B)
+  void attemptSplit(pt A, pt B)
     {
       int back = 0;
       int front = 0;
@@ -399,9 +399,8 @@ class pts
         println("# of regions is now " + regions);
         println("We replaced region " + currentRegion + " with leftRegion");
         println("We inserted the rightRegion at position " + regions);
-        split = false;
       }
-      return goodSplit;
+      split = false;
     }
   
   }  // end class pts

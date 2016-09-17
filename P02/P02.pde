@@ -56,7 +56,7 @@ void draw()      // executed at each frame
       C.show();
     }
     debugPoints = false;
-    P.splitBy(A,B);
+    P.attemptSplit(A,B);
 
 
   if(recordingPDF) endRecordingPDF();  // end saving a .pdf file with the image of the canvas
