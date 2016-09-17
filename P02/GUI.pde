@@ -146,6 +146,7 @@ void mouseReleased()   // executed when the mouse is pressed
   if (keyPressed && key=='s') B=Mouse(); 
   change=true;
   drawing=false;
+  split = true;
   }
 
 void mouseDragged() // executed when the mouse is dragged (while mouse buttom pressed)

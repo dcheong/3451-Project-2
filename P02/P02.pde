@@ -4,8 +4,13 @@ import processing.pdf.*;    // to save screen shots as PDFs, does not always wor
 
 //**************************** global variables ****************************
 pts P = new pts(); // class containing array of points, used to standardize GUI
+int maxRegionCount = 64;
+int currentRegion = 0;
+int regions = 1;
+pts [] R = new pts [maxRegionCount];
 float t=0, f=0;
 boolean drawing;
+boolean split = false;
 boolean animate=true, fill=false, timing=false;
 boolean lerp=true, slerp=true, spiral=true; // toggles to display vector interpoations
 int ms=0, me=0; // milli seconds start and end for timing
@@ -17,10 +22,12 @@ void setup()               // executed once at the begining
   size(800, 800);            // window size
   frameRate(30);             // render 30 frames per second
   smooth();                  // turn on antialiasing
+  for (int r = 0; r < maxRegionCount; r++) R[r] = new pts();
   myFace = loadImage("data/pic.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
-  P.declare(); // declares all points in P. MUST BE DONE BEFORE ADDING POINTS 
+  R[0].declare(); // declares all points in P. MUST BE DONE BEFORE ADDING POINTS 
   // P.resetOnCircle(4); // sets P to have 4 points and places them in a circle on the canvas
-  P.loadPts("data/pts");  // loads points form file saved with this program
+  R[0].loadPts("data/pts");  // loads points form file saved with this program
+  P = R[0];
   } // end of setup
 
 //**************************** display current frame ****************************
@@ -29,8 +36,10 @@ void draw()      // executed at each frame
   if(recordingPDF) startRecordingPDF(); // starts recording graphics to make a PDF
   
     background(white); // clear screen and paints white background
-    pen(black,3); fill(yellow); P.drawCurve(); P.IDs(); // shows polyloop with vertex labels
-    stroke(red); pt G=P.Centroid(); show(G,10); // shows centroid
+    for (int i = 0; i < regions; i++) {
+      pen(white,3); fill(red);
+      R[i].drawCurve();
+    }
     
     if(P.splitBy(A,B)) { stroke(green); }
     else {

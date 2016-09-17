@@ -19,6 +19,13 @@ class pts
 
   pts() {}
   
+  void printPoints() {
+    println();
+    for (int i = 0; i < nv; i++) {
+      print(G[i].x + ", " + G[i].y + " ");
+    }
+  }
+  
   void declare() {for (int i=0; i<maxnv; i++) G[i]=P(); }               // creates all points, MUST BE DONE AT INITALIZATION
 
   void empty() {nv=0; pv=0; }                                                 // empties this object
@@ -339,12 +346,38 @@ class pts
         
       }
       pt backPoint = P(A,backT,V);
+      arrow(G[front],G[n(front)]);
+      arrow(G[back],G[n(back)]);
       pt frontPoint = P(A, frontT, V);
       pen(red, 2);
       show(backPoint, 4);
       pen(blue, 2);
       show(frontPoint, 4);
       if (g > 0) goodSplit = false;
+      if (goodSplit && split) {
+        pts rightRegion = new pts();
+        rightRegion.declare();
+        rightRegion.addPt(backPoint);
+        int current = n(back);
+        while (current != n(front)) {
+          rightRegion.addPt(G[current]);
+          current = n(current);
+        }
+        rightRegion.addPt(frontPoint);
+        pts leftRegion = new pts();
+        leftRegion.declare();
+        leftRegion.addPt(frontPoint);
+        current = n(front);
+        while (current != n(back)) {
+          leftRegion.addPt(G[current]);
+          current = n(current);
+        }
+        leftRegion.addPt(backPoint);
+        R[regions] = rightRegion;
+        R[currentRegion] = leftRegion;
+        regions++;
+        split = false;
+      }
       return goodSplit;
     }
   
