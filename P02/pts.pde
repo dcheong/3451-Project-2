@@ -370,7 +370,7 @@ class pts
       pt backPoint = P(A,backT,V);
       pt frontPoint = P(A, frontT, V);
       pen(green, 4);
-      if (g > 0) { goodSplit = false; pen(red, 4);}
+      if (g > 0 || r == 0 || b == 0) { goodSplit = false; pen(red, 4);}
       if (drawing) {
         arrow(backPoint, frontPoint);
       }
