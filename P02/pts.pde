@@ -11,6 +11,9 @@ class pts
   int iv = 0;                              // insertion index 
   int maxnv = 100*2*2*2*2*2*2*2*2;         //  max number of vertices
   Boolean loop=true;                       // is a closed loop
+  float angle = 0.0;
+  float scaleFactor = 0.0;
+  vec translate = V(0.0,0.0);
 
   pt[] G = new pt [maxnv];                 // geometry table (vertices)
 
@@ -147,6 +150,7 @@ class pts
   void dragAll() // moves all points to mimick mouse motion
     { 
     for (int i=0; i<nv; i++) G[i].moveWithMouse(); 
+    translate.add(V(mouseX - pmouseX,mouseY - pmouseY));
     }      
   
   void moveAll(vec V) // moves all points by V
@@ -157,6 +161,7 @@ class pts
   void rotateAll(float a, pt C) // rotates all points around pt G by angle a
     {
     for (int i=0; i<nv; i++) G[i].rotate(a,C); 
+    angle += a;
     } 
   
   void rotateAllAroundCentroid(float a) // rotates points around their center of mass by angle a
@@ -173,6 +178,7 @@ class pts
   void scaleAll(float s, pt C) // scales all pts by s wrt C
     {
     for (int i=0; i<nv; i++) G[i].translateTowards(s,C); 
+    scaleFactor += s;
     }  
   
   void scaleAllAroundCentroid(float s) 
@@ -373,8 +379,12 @@ class pts
       }
       if (goodSplit && split) {
         pts rightRegion = new pts();
+        pts temp = P;
         rightRegion.declare();
         rightRegion.addPt(backPoint);
+        rightRegion.angle = temp.angle;
+        rightRegion.scaleFactor = temp.scaleFactor;
+        rightRegion.translate = V(temp.translate.x, temp.translate.y);
         int current = n(back);
         while (current != n(front)) {
           rightRegion.addPt(G[current]);
@@ -384,6 +394,9 @@ class pts
         pts leftRegion = new pts();
         leftRegion.declare();
         leftRegion.addPt(frontPoint);
+        leftRegion.angle = temp.angle;
+        leftRegion.scaleFactor = temp.scaleFactor;
+        leftRegion.translate = V(temp.translate.x, temp.translate.y);
         current = n(front);
         while (current != n(back)) {
           leftRegion.addPt(G[current]);

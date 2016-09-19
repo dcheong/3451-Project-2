@@ -51,6 +51,9 @@ void draw()      // executed at each frame
         P = R[i];
         if (debugPoints) {
           println("The mouse is inside region " + i);
+          println("angle: " + P.angle);
+          println("scale: " + P.scaleFactor);
+          println("translate: " + P.translate.x + " " + P.translate.y);
         }
         currentRegion = i;
       }
