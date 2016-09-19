@@ -75,6 +75,12 @@ class pts
     for (int i=1; i<nv; i++) 
       if (d(M,G[i])<d(M,G[pv])) pv=i;
     }
+    
+  e pickClosestEdge(pt M)
+    {
+      pickClosest(M);
+      return disToLine(M,G[pv],G[n(pv)])<disToLine(M,G[p(pv)],G[pv])?new e(G[pv], G[n(pv)]):new e(G[p(pv)],G[pv]);
+    }
 
   void dragPicked()  // moves selected point (index pv) by the amount by which the mouse moved recently
     { 

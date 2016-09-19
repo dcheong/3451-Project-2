@@ -107,7 +107,17 @@ void keyPressed()  // executed each time a key is pressed: sets the Boolean "key
     if(key=='.') ;  // used in mousePressed to tweak current frame f
     if(key=='/') ;
   
-    if(key==' ') ;
+    if(key==' ') {
+      switch(mode) {
+        case 0:
+          mode = 1;
+          break;
+        case 1:
+          mode = 0;
+          break;
+        default:
+      }
+    }
   
     if (key == CODED) 
        {
@@ -143,7 +153,24 @@ void mousePressed()   // executed when the mouse is pressed
 
 void mouseReleased()   // executed when the mouse is pressed
   {
-  if (keyPressed && key=='s') { 
+  if (!keyPressed && mode == 1) {
+    switch (edgesSelected) {
+      case 0:
+        edge1 = P.pickClosestEdge(Mouse());
+        edgesSelected++;
+        break;
+      case 1:
+        edge2 = P.pickClosestEdge(Mouse());
+        edgesSelected++;
+        break;
+      case 2:
+        edge1 = null; edge2 = null;
+        edgesSelected = 0;
+        break;
+      default:
+    }
+  }
+  if (keyPressed && key=='s' && mode == 0) { 
     B=Mouse(); 
     split = true;
   }
@@ -154,21 +181,18 @@ void mouseReleased()   // executed when the mouse is pressed
 
 void mouseDragged() // executed when the mouse is dragged (while mouse buttom pressed)
   {
-  if (!keyPressed) P.dragAll();   // drag selected point with mouse
-  if (keyPressed) {
-      if (key=='.') f+=2.*float(mouseX-pmouseX)/width;  // adjust current frame   
-      if (key=='r') P.rotateAllAroundCentroid(Mouse(),Pmouse()); // turn all vertices around their center of mass
-      if (key=='z') P.scaleAllAroundCentroid(Mouse(),Pmouse()); // scale all vertices with respect to their center of mass
-      }
-  if (keyPressed && key=='s') B=Mouse(); 
+    if (mode == 0) {
+      if (!keyPressed) P.dragAll();   // drag selected point with mouse
+      if (keyPressed) {
+          if (key=='.') f+=2.*float(mouseX-pmouseX)/width;  // adjust current frame   
+          if (key=='r') P.rotateAllAroundCentroid(Mouse(),Pmouse()); // turn all vertices around their center of mass
+          if (key=='z') P.scaleAllAroundCentroid(Mouse(),Pmouse()); // scale all vertices with respect to their center of mass
+          }
+      if (keyPressed && key=='s') B=Mouse(); 
+    }
+  
   change=true;
   }  
-
-void mouseWheel(MouseEvent event) { // reads mouse wheel and uses to zoom
-  float s = event.getAmount();
-  P.scaleAllAroundCentroid(s/100);
-  change=true;
-  }
 
 //**************************** text for name, title and help  ****************************
 String title ="Split Polygon Puzzle",            name ="Students: Lily LAU, Douglas CHEONG",

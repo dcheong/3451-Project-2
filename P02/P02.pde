@@ -4,6 +4,7 @@ import processing.pdf.*;    // to save screen shots as PDFs, does not always wor
 
 //**************************** global variables ****************************
 pts P = new pts(); // class containing array of points, used to standardize GUI
+int mode = 0;
 int maxRegionCount = 64;
 int currentRegion = 0;
 int regions = 1;
@@ -18,6 +19,9 @@ int ms=0, me=0; // milli seconds start and end for timing
 int npts=20000; // number of points
 pt A=P(100,100), B=P(300,300);
 pts outline;
+//****************************PlAYER VARIABLES****************************
+e edge1, edge2;
+int edgesSelected = 0;
 //**************************** initialization ****************************
 void setup()               // executed once at the begining 
   {
@@ -43,7 +47,6 @@ void draw()      // executed at each frame
     pen(red, 2);
     outline.drawCurve();
     for (int i = 0; i < regions; i++) {
-      
       pen(white,3);
       fill(black);
       if (R[i].inside(i)) {
@@ -59,8 +62,22 @@ void draw()      // executed at each frame
       }
       R[i].drawCurve();
     }
+    if (edge1 != null) {
+      edge1.show();
+    }
+    if (edge2 != null) {
+      edge2.show();
+    }
     debugPoints = false;
-    P.attemptSplit(A,B);
+    switch (mode) {
+      case 0:
+        P.attemptSplit(A,B);
+        break;
+      case 1:
+        
+      default:
+    }
+    
 
 
   if(recordingPDF) endRecordingPDF();  // end saving a .pdf file with the image of the canvas
