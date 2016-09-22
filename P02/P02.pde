@@ -20,6 +20,7 @@ int npts=20000; // number of points
 pt A=P(100,100), B=P(300,300);
 pts outline;
 //****************************PlAYER VARIABLES****************************
+e edge1p;
 e edge1, edge2;
 int edgesSelected = 0;
 float aF = 1000.; //animate time for edge animation in milliseconds
@@ -63,6 +64,7 @@ void draw()      // executed at each frame
           println("angle: " + P.angle);
           println("scale: " + P.scaleFactor);
           println("translate: " + P.translate.x + " " + P.translate.y);
+          println(d(P.original, P.G[0]));
         }
         currentRegion = i;
       }
@@ -83,11 +85,11 @@ void draw()      // executed at each frame
         }
         win = true;
           for (int j = 0; j < regions;j++) {
-            if (abs(R[j].angle) > 0.01 || abs(R[j].scaleFactor) > 0.01 || abs(R[j].translate.x) > 0.01 || abs(R[j].translate.y) > 0.01) {
-              println(j);
-              println(R[j].angle);
-              println(R[j].scaleFactor);
-              println(R[j].translate.x + " " + R[j].translate.y);
+            if (abs(R[j].angle/TWO_PI - ((int)(R[j].angle/TWO_PI))) > 0.01 || abs(R[j].scaleFactor - 1.) > 0.01 || d(R[j].original, R[j].G[0]) > 5.) {
+              //println(j);
+              //println(R[j].angle);
+              //println(R[j].scaleFactor);
+              //println(R[j].translate.x + " " + R[j].translate.y);
               win = false;
             }
           }
@@ -97,28 +99,25 @@ void draw()      // executed at each frame
             break;
           }
         if (moving) {
-          //e moveTo = spiral(edge1, edge2, t/aF);
-          float angleInc = angle(edge1, edge2);
+          e moveTo = spiral(edge1p, edge2, t/aF);
+          println(angle(edge1, edge2));
+          float angleInc = angle(edge1, moveTo);
           pts points = R[edge1.P];
           if (!Float.isNaN(angleInc) || abs(angleInc) > 0.001) points.rotateAll(angleInc, edge1.A);
-          float scaleInc = scaleF(edge2, edge1) - 1;
-          vec transInc = translation(edge1, edge2);
+          float scaleInc = scaleF(moveTo, edge1) - 1;
+          vec transInc = translation(edge1, moveTo);
           points.scaleAll(scaleInc, edge1.A);
           points.moveAll(transInc);
           
-          moving = false;
-          edge1 = null;
-          edge2 = null;
-          edgesSelected = 0;
-          //t += 1000/30;
-          //if (t >= aF) {
-          //  println("over aF");
-          //  t = 0.;
-          //  moving = false;
-          //  edge1 = null;
-          //  edge2 = null;
-          //  edgesSelected = 0;
-          //}
+          t += (1000/30);
+          if (t >= aF) {
+            println("done");
+            t = 0.;
+            moving = false;
+            edge1 = null;
+            edge2 = null;
+            edgesSelected = 0;
+          }
         }
         break;
       case 2:
@@ -132,7 +131,7 @@ void draw()      // executed at each frame
   fill(black); displayHeader(); // displays header
   if(scribeText && !filming) displayFooter(); // shows title, menu, and my face & name 
 
-  if(filming && (animating || change)) snapFrameToTIF(); // saves image on canvas as movie frame 
+  if(filming) snapFrameToTIF(); // saves image on canvas as movie frame 
   if(snapTIF) snapPictureToTIF();   
   if(snapJPG) snapPictureToJPG();   
   change=false; // to avoid capturing movie frames when nothing happens

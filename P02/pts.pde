@@ -6,13 +6,14 @@
 //*****************************************************************************
 class pts 
   {
+  pt original;
   int nv=0;                                // number of vertices in the sequence
   int pv = 0;                              // picked vertex 
   int iv = 0;                              // insertion index 
   int maxnv = 100*2*2*2*2*2*2*2*2;         //  max number of vertices
   Boolean loop=true;                       // is a closed loop
   float angle = 0.0;
-  float scaleFactor = 0.0;
+  float scaleFactor = 1.0;
   vec translate = V(0.0,0.0);
 
   pt[] G = new pt [maxnv];                 // geometry table (vertices)
@@ -184,8 +185,10 @@ class pts
 
   void scaleAll(float s, pt C) // scales all pts by s wrt C
     {
+      float before = d(G[0],G[n(0)]);
     for (int i=0; i<nv; i++) G[i].translateTowards(s,C); 
-    scaleFactor += s;
+    float after = d(G[0],G[n(0)]);
+    scaleFactor *= after / before;
     }  
   
   void scaleAllAroundCentroid(float s) 
@@ -389,6 +392,7 @@ class pts
         pts temp = P;
         rightRegion.declare();
         rightRegion.addPt(backPoint);
+        rightRegion.original = new pt(backPoint.x, backPoint.y);
         rightRegion.angle = temp.angle;
         rightRegion.scaleFactor = temp.scaleFactor;
         rightRegion.translate = V(temp.translate.x, temp.translate.y);
@@ -401,6 +405,7 @@ class pts
         pts leftRegion = new pts();
         leftRegion.declare();
         leftRegion.addPt(frontPoint);
+        leftRegion.original = new pt(frontPoint.x, frontPoint.y);
         leftRegion.angle = temp.angle;
         leftRegion.scaleFactor = temp.scaleFactor;
         leftRegion.translate = V(temp.translate.x, temp.translate.y);

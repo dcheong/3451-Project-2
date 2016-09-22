@@ -114,6 +114,9 @@ void keyPressed()  // executed each time a key is pressed: sets the Boolean "key
           break;
         case 1:
           mode = 0;
+          edge1 = null;
+          edge2 = null;
+          edgesSelected = 0;
           break;
         default:
       }
@@ -122,8 +125,11 @@ void keyPressed()  // executed each time a key is pressed: sets the Boolean "key
     if (key == CODED) 
        {
        String pressed = "Pressed coded key ";
-       if (keyCode == UP) {pressed="UP";   }
-       if (keyCode == DOWN) {pressed="DOWN";   };
+       if (mode == 0) {
+         if (keyCode == UP) {P.scaleAllAroundCentroid(-0.5);   }
+         if (keyCode == DOWN) {P.scaleAllAroundCentroid(0.5);   };
+       }
+       
        if (keyCode == LEFT) {pressed="LEFT";   };
        if (keyCode == RIGHT) {pressed="RIGHT";   };
        if (keyCode == ALT) {pressed="ALT";   };
@@ -166,6 +172,9 @@ void mouseReleased()   // executed when the mouse is pressed
           edge2 = new e(temp.B,temp.A);
           edge2.P = currentRegion;
           edgesSelected++;
+          pt tempA = new pt(edge1.A.x, edge1.A.y);
+          pt tempB = new pt(edge1.B.x, edge1.B.y);
+          edge1p = new e(tempA, tempB);
           moving = true;
         }
         break;
@@ -184,12 +193,11 @@ void mouseReleased()   // executed when the mouse is pressed
 void mouseDragged() // executed when the mouse is dragged (while mouse buttom pressed)
   {
     if (mode == 0) {
-      if (!keyPressed) P.dragAll();   // drag selected point with mouse
+      if (!keyPressed && regions > 1) P.dragAll();   // dra g selected point with mouse
       if (keyPressed) {
           if (key=='.') f+=2.*float(mouseX-pmouseX)/width;  // adjust current frame   
           if (key=='r') P.rotateAllAroundCentroid(Mouse(),Pmouse()); // turn all vertices around their center of mass
-          if (key=='z') P.scaleAllAroundCentroid(Mouse(),Pmouse()); // scale all vertices with respect to their center of mass
-          }
+      }
       if (keyPressed && key=='s') B=Mouse(); 
     }
   
