@@ -157,15 +157,17 @@ void mouseReleased()   // executed when the mouse is pressed
     switch (edgesSelected) {
       case 0:
         edge1 = P.pickClosestEdge(Mouse());
+        edge1.P = currentRegion;
         edgesSelected++;
         break;
       case 1:
-        edge2 = P.pickClosestEdge(Mouse());
-        edgesSelected++;
-        break;
-      case 2:
-        edge1 = null; edge2 = null;
-        edgesSelected = 0;
+        if (currentRegion != edge1.P) {
+          e temp = P.pickClosestEdge(Mouse());
+          edge2 = new e(temp.B,temp.A);
+          edge2.P = currentRegion;
+          edgesSelected++;
+          moving = true;
+        }
         break;
       default:
     }

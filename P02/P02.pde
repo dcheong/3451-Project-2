@@ -9,7 +9,7 @@ int maxRegionCount = 64;
 int currentRegion = 0;
 int regions = 1;
 pts [] R = new pts [maxRegionCount];
-float t=0, f=0;
+float t=0., f=0.;
 boolean debugPoints = false;
 boolean drawing;
 boolean split = false;
@@ -22,6 +22,9 @@ pts outline;
 //****************************PlAYER VARIABLES****************************
 e edge1, edge2;
 int edgesSelected = 0;
+float aF = 1000.; //animate time for edge animation in milliseconds
+boolean moving = false;
+
 //**************************** initialization ****************************
 void setup()               // executed once at the begining 
   {
@@ -62,19 +65,46 @@ void draw()      // executed at each frame
       }
       R[i].drawCurve();
     }
-    if (edge1 != null) {
-      edge1.show();
-    }
-    if (edge2 != null) {
-      edge2.show();
-    }
+    
     debugPoints = false;
     switch (mode) {
       case 0:
         P.attemptSplit(A,B);
         break;
       case 1:
-        
+        if (edge1 != null) {
+          edge1.show();
+        }
+        if (edge2 != null) {
+          edge2.show();
+        }
+        if (moving) {
+          //e moveTo = spiral(edge1, edge2, t/aF);
+          float angleInc = angle(edge1, edge2);
+          
+          pts points = R[edge1.P];
+          points.rotateAll(angleInc, edge1.A);
+          float scaleInc = scaleF(edge2, edge1) - 1;
+          println(scaleInc + 1);
+          vec transInc = translation(edge1, edge2);
+          points.scaleAll(scaleInc, edge1.A);
+          points.moveAll(transInc);
+          
+          moving = false;
+          edge1 = null;
+          edge2 = null;
+          edgesSelected = 0;
+          //t += 1000/30;
+          //if (t >= aF) {
+          //  println("over aF");
+          //  t = 0.;
+          //  moving = false;
+          //  edge1 = null;
+          //  edge2 = null;
+          //  edgesSelected = 0;
+          //}
+        }
+        break;
       default:
     }
     

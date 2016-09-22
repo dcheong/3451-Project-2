@@ -48,6 +48,7 @@ class pt
 
 class e
   {
+    int P;
     pt A, B;
     e() {};
     e(pt A, pt B) {
@@ -58,7 +59,30 @@ class e
       pen(red, 2);
       edge(A,B);
     }
+    float magnitude() {
+      return sqrt(pow(B.x - A.x,2) + pow(B.y - A.y,2));
+    }
   }
+  
+float dot(e e1, e e2) {
+  float e1X = e1.B.x - e1.A.x;
+  float e1Y = e1.B.y - e1.A.y;
+  float e2X = e2.B.x - e2.A.x;
+  float e2Y = e2.B.y - e2.A.y;
+  return (e1X * e2X + e1Y * e2Y);
+}
+  
+float angle(e e1, e e2) {
+  return acos(dot(e1,e2)/(e1.magnitude() * e2.magnitude()));
+}
+
+vec translation(e e1, e e2) {
+  return V(e2.A.x - e1.A.x, e2.A.y - e1.A.y);
+}
+
+float scaleF(e e1, e e2) {
+  return e2.magnitude()/e1.magnitude();
+}
 
 //************************************************************************
 //**** VECTOR CLASS

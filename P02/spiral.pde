@@ -38,6 +38,13 @@ pt spiral(pt A, pt B, pt C, pt D, float t, pt Q)
   return L(G,R(Q,t*a,G),pow(s,t));
   }
   
+e spiral(e e1, e e2, float t) {
+  float a =spiralAngle(e1.A,e1.B,e2.A,e2.B); 
+  float s =spiralScale(e1.A,e1.B,e2.A,e2.B);
+  pt G = spiralCenter(a, s,e1.A, e2.A); 
+  return new e(L(G,R(e1.A,t*a,G),pow(s,t)),L(G,R(e1.B,t*a,G),pow(s,t)));
+}
+  
 // IMAGE OF POINT A BY SPIRAL MOTION THAT MORPHS EDGE(A,B) AND EDGE(C,D)
 pt spiralA(pt A, pt B, pt C, pt D, float t) 
   {
