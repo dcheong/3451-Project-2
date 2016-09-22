@@ -162,6 +162,7 @@ class pts
   void moveAll(vec V) // moves all points by V
     {
     for (int i=0; i<nv; i++) G[i].add(V); 
+    translate.add(V);
     }   
 
   void rotateAll(float a, pt C) // rotates all points around pt G by angle a

@@ -24,6 +24,7 @@ e edge1, edge2;
 int edgesSelected = 0;
 float aF = 1000.; //animate time for edge animation in milliseconds
 boolean moving = false;
+boolean win;
 
 //**************************** initialization ****************************
 void setup()               // executed once at the begining 
@@ -52,7 +53,9 @@ void draw()      // executed at each frame
     for (int i = 0; i < regions; i++) {
       pen(white,3);
       fill(black);
-      if (R[i].inside(i)) {
+      if (mode == 2) fill(green);
+      
+      if (R[i].inside(i) && mode != 2) {
         fill(grey);
         P = R[i];
         if (debugPoints) {
@@ -78,14 +81,27 @@ void draw()      // executed at each frame
         if (edge2 != null) {
           edge2.show();
         }
+        win = true;
+          for (int j = 0; j < regions;j++) {
+            if (abs(R[j].angle) > 0.01 || abs(R[j].scaleFactor) > 0.01 || abs(R[j].translate.x) > 0.01 || abs(R[j].translate.y) > 0.01) {
+              println(j);
+              println(R[j].angle);
+              println(R[j].scaleFactor);
+              println(R[j].translate.x + " " + R[j].translate.y);
+              win = false;
+            }
+          }
+          if (win) {
+            mode = 2;
+            println("win");
+            break;
+          }
         if (moving) {
           //e moveTo = spiral(edge1, edge2, t/aF);
           float angleInc = angle(edge1, edge2);
-          
           pts points = R[edge1.P];
-          points.rotateAll(angleInc, edge1.A);
+          if (!Float.isNaN(angleInc) || abs(angleInc) > 0.001) points.rotateAll(angleInc, edge1.A);
           float scaleInc = scaleF(edge2, edge1) - 1;
-          println(scaleInc + 1);
           vec transInc = translation(edge1, edge2);
           points.scaleAll(scaleInc, edge1.A);
           points.moveAll(transInc);
@@ -105,9 +121,10 @@ void draw()      // executed at each frame
           //}
         }
         break;
+      case 2:
+        println("You win.");
       default:
     }
-    
 
 
   if(recordingPDF) endRecordingPDF();  // end saving a .pdf file with the image of the canvas
